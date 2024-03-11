@@ -1,0 +1,21 @@
+body{
+	font-family: "Inconsolata", monospace;
+}
+
+img{
+	height: 200px;
+	width: 200px;
+}
+.img{
+	display: inline-block;
+}
+
+.info {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+.info p{
+	display: block;
+}
+

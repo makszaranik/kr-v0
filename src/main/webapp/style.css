@@ -1,0 +1,40 @@
+body{
+    font-family: "Inconsolata", monospace;
+}
+
+.present p{
+	display: inline-block;
+}
+
+.present a{
+	text-decoration: none;
+    color: black;
+}
+
+.members a{
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+
+.members a:hover{
+    text-decoration: underline;
+}
+
+.members ul{
+    list-style-type: none;
+}
+
+.labs a{
+	display: block;
+    text-decoration: none;
+    color: black;
+}
+
+.labs a:hover{
+    text-decoration: underline;
+}
+
+.labs ul{
+    list-style-type: none;
+}
