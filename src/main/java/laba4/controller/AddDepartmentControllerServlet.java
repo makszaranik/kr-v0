@@ -29,16 +29,11 @@ public class AddDepartmentControllerServlet extends HttpServlet {
     String departmentName = request.getParameter("departmentName");
     String instituteName = request.getParameter("instituteName");
 
-    if (!instituteFactory.instituteExists(instituteName)) {
-      response.sendRedirect("InstituteNotFound.jsp");
-      return;
-    }
+    instituteFactory.createOrGetInstance(instituteName);
+    Department department = departmentFactory.createOrGetInstance(departmentName, instituteName);
+    instituteFactory.createOrGetInstance(instituteName).addDepartment(department);
+    response.sendRedirect("/lab4-page");
 
-    try {
-      Department department = departmentFactory.getDepartmentInstance(departmentName, instituteName);
-      response.getWriter().println("Department created successfully: " + department.getName());
-    } catch (IllegalArgumentException e) {
-      request.getRequestDispatcher("InstituteNotFound.jsp").forward(request, response);
-    }
+
   }
 }

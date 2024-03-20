@@ -27,14 +27,11 @@ public class AddStudentControllerServlet extends HttpServlet {
     String departmentName = request.getParameter("departmentName");
     String instituteName = request.getParameter("instituteName");
 
-    Department department = departmentFactory.getDepartmentInstance(departmentName, instituteName);
-    if (department == null) {
-      request.getRequestDispatcher("/DepartmentNotFound.jsp").forward(request, response);
-      return;
-    }
-
+    Department department = departmentFactory.createOrGetInstance(departmentName, instituteName);
     Student student = new Student(name, surname);
     department.addStudent(student);
+
+    response.sendRedirect("/lab4-page");
 
   }
 }

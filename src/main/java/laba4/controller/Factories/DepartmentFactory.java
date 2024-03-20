@@ -1,6 +1,7 @@
 package laba4.controller.Factories;
 
 import laba4.model.Department;
+import laba4.model.Institute;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,18 +24,19 @@ public class DepartmentFactory {
     return instance;
   }
 
-  public Department getDepartmentInstance(String departmentName, String instituteName) {
-    if (!instituteFactory.instituteExists(instituteName)) {
-      throw new IllegalArgumentException("Institute with name " + instituteName + " does not exist.");
-    }
-
-    if (departments.containsKey(departmentName)) {
+  public Department createOrGetInstance(String departmentName, String instituteName) {
+    Institute institute = instituteFactory.createOrGetInstance(instituteName);
+    if (isExists(departmentName)) {
       return departments.get(departmentName);
     } else {
       Department department = new Department(departmentName);
       departments.put(departmentName, department);
       return department;
     }
+  }
+
+  public boolean isExists(String departmentName) {
+    return departments.containsKey(departmentName);
   }
 
   public Set<String> getAllDepartmentNames() {

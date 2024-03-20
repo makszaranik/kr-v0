@@ -19,16 +19,17 @@ public class InstituteFactory {
     return instance;
   }
 
-  public Institute createInstitute(String instituteName) {
-    if (institutes.containsKey(instituteName)) {
-      throw new IllegalArgumentException("Institute with name " + instituteName + " already exists.");
+  public Institute createOrGetInstance(String instituteName) {
+    if (isExists(instituteName)) {
+      return institutes.get(instituteName);
+    } else {
+      Institute institute = new Institute(instituteName);
+      institutes.put(instituteName, institute);
+      return institute;
     }
-    Institute institute = new Institute(instituteName);
-    institutes.put(instituteName, institute);
-    return institute;
   }
 
-  public boolean instituteExists(String instituteName) {
+  public boolean isExists(String instituteName) {
     return institutes.containsKey(instituteName);
   }
 }
