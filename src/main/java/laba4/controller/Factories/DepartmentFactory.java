@@ -28,12 +28,9 @@ public class DepartmentFactory {
       throw new IllegalArgumentException("Institute with name " + instituteName + " does not exist.");
     }
 
-    // Проверяем, существует ли уже департамент с указанным именем
     if (departments.containsKey(departmentName)) {
-      // Если департамент уже существует, просто возвращаем его
       return departments.get(departmentName);
     } else {
-      // Иначе создаем новый департамент и добавляем его в мапу департаментов
       Department department = new Department(departmentName);
       departments.put(departmentName, department);
       return department;

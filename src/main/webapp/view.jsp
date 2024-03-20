@@ -5,10 +5,14 @@
 </head>
 <body>
 <h1>List Page</h1>
-<ul>
-    <li><a href="ListStudentsServlet">List all Students</a></li>
-    <li><a href="ListDepartmentsServlet">List all Departments</a></li>
-    <li><a href="ListInstitutesServlet">List all Institutes</a></li>
-</ul>
+<form action="ShowStudentsServlet" method="get">
+    <label for="institute">Enter Institute:</label>
+    <input type="text" id="institute" name="institute"><br>
+
+    <label for="department">Enter Department:</label>
+    <input type="text" id="department" name="department"><br>
+
+    <input type="submit" value="Show Students">
+</form>
 </body>
 </html>

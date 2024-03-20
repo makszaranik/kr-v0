@@ -38,7 +38,7 @@ public class AddDepartmentControllerServlet extends HttpServlet {
       Department department = departmentFactory.getDepartmentInstance(departmentName, instituteName);
       response.getWriter().println("Department created successfully: " + department.getName());
     } catch (IllegalArgumentException e) {
-      request.getRequestDispatcher("/errorPage.jsp").forward(request, response);
+      request.getRequestDispatcher("InstituteNotFound.jsp").forward(request, response);
     }
   }
 }
