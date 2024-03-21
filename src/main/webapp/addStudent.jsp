@@ -16,6 +16,10 @@
     <input type="text" id="departmentName" name="departmentName"><br>
     <label for="instituteName">Institute:</label>
     <input type="text" id="instituteName" name="instituteName"><br>
+    <label for="numberScorecard">Scorecard Number:</label>
+    <input type="number" id="numberScorecard" name="numberScorecard" min="0"><br>
+    <label for="averageMark">Average Mark:</label>
+    <input type="number" id="averageMark" name="averageMark" min="0" step="1"><br>
     <input type="submit" value="Add Student">
 </form>
 </body>

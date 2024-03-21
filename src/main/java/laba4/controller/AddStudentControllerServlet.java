@@ -26,9 +26,11 @@ public class AddStudentControllerServlet extends HttpServlet {
     String surname = request.getParameter("studentSurname");
     String departmentName = request.getParameter("departmentName");
     String instituteName = request.getParameter("instituteName");
+    Integer numberScorecard = Integer.valueOf(request.getParameter("numberScorecard"));
+    Integer averageMark = Integer.valueOf(request.getParameter("averageMark"));
 
     Department department = departmentFactory.createOrGetInstance(departmentName, instituteName);
-    Student student = new Student(name, surname);
+    Student student = new Student(name, surname, numberScorecard, averageMark);
     department.addStudent(student);
 
     response.sendRedirect("/lab4-page");
