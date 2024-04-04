@@ -1,35 +1,40 @@
-package Queue.view;
+package Queue.controller;
 
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import java.util.List;
 import Queue.model.Queue;
 import Queue.model.QueueManager;
 import Queue.model.User;
 
-import java.io.IOException;
-import java.util.List;
+@WebServlet("/EditQueue")
+public class EditQueueServlet extends HttpServlet {
 
-@WebServlet("/ViewAllQueues")
-public class ViewAllQueueSelectedServlet extends HttpServlet {
+  private QueueManager queueManager;
+
+  @Override
+  public void init() throws ServletException {
+    queueManager = QueueManager.getInstance();
+  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-    if (user != null) {
-      QueueManager queueManager = QueueManager.getInstance();
-      List<Queue> allQueues = queueManager.getQueues();
-
-      request.setAttribute("selectedQueue", allQueues);
-      request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
-    } else {
+    if (user == null) {
       response.sendRedirect("LoginPage.jsp");
+      return;
     }
+
+    String username = user.getUsername();
+    List<Queue> userQueues = queueManager.getQueuesByUsername(username);
+    request.setAttribute("queues", userQueues);
+    request.getRequestDispatcher("EditMyQueueSelected.jsp").forward(request, response);
   }
 }

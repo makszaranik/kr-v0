@@ -1,4 +1,4 @@
-package Queue.controller;
+package Queue.view;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
