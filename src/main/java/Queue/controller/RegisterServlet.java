@@ -1,6 +1,7 @@
 package Queue.controller;
 
 import Queue.dao.UserDAO;
+import Queue.dao.UserDAOFactory;
 import Queue.dao.UserDataBase;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -12,7 +13,12 @@ import Queue.model.User;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+  private UserDAOFactory userDAOFactory;
 
+
+  public void init(){
+      userDAOFactory = UserDAOFactory.getInstance();
+  }
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
@@ -20,9 +26,9 @@ public class RegisterServlet extends HttpServlet {
     String password = request.getParameter("password");
 
 
-    User newUser = new User(username, password);
-    UserDAO userDataBase = UserDataBase.getInstance();
-    userDataBase.addUser(newUser);
+    User user = new User(username, password);
+    UserDAO userDataBase = userDAOFactory.getUserDAO();
+    userDataBase.addUser(user);
 
 
     response.sendRedirect("/LoginPage.jsp");
