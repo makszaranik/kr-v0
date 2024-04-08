@@ -26,8 +26,12 @@ public class ViewAllQueueSelectedServlet extends HttpServlet {
       QueueManager queueManager = QueueManager.getInstance();
       List<Queue> allQueues = queueManager.getQueues();
 
-      request.setAttribute("selectedQueue", allQueues);
-      request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
+      if (!allQueues.isEmpty()) {
+        request.setAttribute("selectedQueue", allQueues);
+        request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
+      } else {
+        request.getRequestDispatcher("NothingToShow.jsp").forward(request, response);
+      }
     } else {
       response.sendRedirect("LoginPage.jsp");
     }

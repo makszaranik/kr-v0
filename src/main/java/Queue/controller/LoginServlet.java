@@ -31,6 +31,7 @@ public class LoginServlet extends HttpServlet {
     UserDAO userDataBase = userDAOFactory.getUserDAO();
 
     if (userDataBase.isUserExist(username, password)) {
+      request.getSession().setAttribute("username", username);
       request.getSession().setAttribute("user", new User(username, password));
       response.sendRedirect("/MainPage.jsp");
     } else {

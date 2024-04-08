@@ -31,8 +31,12 @@ public class ViewMyQueueSelectedServlet extends HttpServlet {
     if (user != null && selectedQueueName != null) {
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
 
-      request.setAttribute("selectedQueue", selectedQueue);
-      request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
+      if (selectedQueue != null && !selectedQueue.getItems().isEmpty()) {
+        request.setAttribute("selectedQueue", selectedQueue);
+        request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
+      } else {
+        request.getRequestDispatcher("NothingToShow.jsp").forward(request, response);
+      }
     }
   }
 }

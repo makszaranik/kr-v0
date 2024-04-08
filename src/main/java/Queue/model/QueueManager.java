@@ -24,9 +24,6 @@ public class QueueManager {
 
   public void createQueue(String name, User creator) {
     Queue queue = new Queue(name, creator);
-    queue.addItem("12");
-    queue.addItem("13");
-    queue.addItem("15");
     queue.addUser(creator);
     queues.add(queue);
   }
