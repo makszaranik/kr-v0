@@ -24,8 +24,12 @@ public class RegisterServlet extends HttpServlet {
 
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String confirmPassword = request.getParameter("confirm_password");
 
-
+    if(!password.equals(confirmPassword)){
+        response.sendRedirect("/PasswordMismatch.jsp");
+        return;
+    }
     User user = new User(username, password);
     UserDAO userDataBase = userDAOFactory.getUserDAO();
     userDataBase.addUser(user);

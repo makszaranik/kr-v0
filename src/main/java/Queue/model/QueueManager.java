@@ -24,20 +24,15 @@ public class QueueManager {
 
   public void createQueue(String name, User creator) {
     Queue queue = new Queue(name, creator);
+    queue.addItem("12");
+    queue.addItem("13");
+    queue.addItem("15");
+    queue.addUser(creator);
     queues.add(queue);
   }
 
   public void deleteQueue(Queue queue) {
     queues.remove(queue);
-  }
-
-  public Queue findQueueByName(String name) {
-    for (Queue queue : queues) {
-      if (queue.getName().equals(name)) {
-        return queue;
-      }
-    }
-    return null;
   }
 
   public List<Queue> getQueuesByUsername(String username) {

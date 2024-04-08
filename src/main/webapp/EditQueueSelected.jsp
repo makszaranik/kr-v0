@@ -7,25 +7,31 @@
 <body>
 <h1>Edit Queue</h1>
 
-<form action="EditMyQueueSelected" method="post">
+<form action="DeleteQueueServlet" method="post">
     <select name="selectedQueue">
         <c:forEach var="queue" items="${queues}">
             <option value="${queue.name}">${queue.name}</option>
         </c:forEach>
     </select>
-    <input type="hidden" name="action" value="deleteQueue">
     <input type="submit" value="Delete Queue">
 </form>
 
-
-<form action="EditMyQueueSelected" method="post">
-    <input type="hidden" name="action" value="addBack">
+<form action="AddToQueueServlet" method="post">
+    <select name="selectedQueue">
+        <c:forEach var="queue" items="${queues}">
+            <option value="${queue.name}">${queue.name}</option>
+        </c:forEach>
+    </select>
     <input type="text" name="newItem" placeholder="Enter new item">
     <input type="submit" value="Add">
 </form>
 
-<form action="EditMyQueueSelected" method="post">
-    <input type="hidden" name="action" value="removeFront">
+<form action="RemoveFromQueueServlet" method="post">
+    <select name="selectedQueue">
+        <c:forEach var="queue" items="${queues}">
+            <option value="${queue.name}">${queue.name}</option>
+        </c:forEach>
+    </select>
     <input type="text" name="itemToRemove" placeholder="Enter item to remove">
     <input type="submit" value="Remove">
 </form>

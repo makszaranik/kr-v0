@@ -8,11 +8,11 @@
 <h1>View Selected Queue</h1>
 
 <c:if test="${selectedQueue ne null}">
-    <h2>Queue Name: ${selectedQueue.name}</h2>
+    <h1>Queue Name: ${selectedQueue.name}</h1>
     <p>Created by: ${selectedQueue.creator.username}</p>
     <ul>
-        <c:forEach var="user" items="${selectedQueue.users}">
-            <li>${user.username}</li>
+        <c:forEach var="item" items="${selectedQueue.items}">
+            <li>${item}</li>
         </c:forEach>
     </ul>
 </c:if>

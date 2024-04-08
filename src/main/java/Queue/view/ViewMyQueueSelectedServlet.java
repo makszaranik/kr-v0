@@ -16,6 +16,11 @@ import java.io.IOException;
 @WebServlet("/ViewSelectedQueue")
 public class ViewMyQueueSelectedServlet extends HttpServlet {
 
+  QueueManager queueManager;
+  public void init(){
+    queueManager = QueueManager.getInstance();
+  }
+
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String selectedQueueName = request.getParameter("selectedQueue");
@@ -24,7 +29,6 @@ public class ViewMyQueueSelectedServlet extends HttpServlet {
     User user = (User) session.getAttribute("user");
 
     if (user != null && selectedQueueName != null) {
-      QueueManager queueManager = QueueManager.getInstance();
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
 
       request.setAttribute("selectedQueue", selectedQueue);

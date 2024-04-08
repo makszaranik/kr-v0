@@ -15,16 +15,20 @@ import Queue.model.User;
 @WebServlet("/createQueue")
 public class CreateQueueServlet extends HttpServlet {
 
+  private QueueManager queueManager;
+
+  public void init(){
+    queueManager = QueueManager.getInstance();
+  }
+
+
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String queueName = request.getParameter("queueName");
 
     HttpSession session = request.getSession();
     User creator = (User) session.getAttribute("user");
-
-    QueueManager queueManager = QueueManager.getInstance();
     queueManager.createQueue(queueName, creator);
-
     response.sendRedirect("/MainPage.jsp");
   }
 }

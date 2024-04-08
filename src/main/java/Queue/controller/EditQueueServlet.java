@@ -35,6 +35,6 @@ public class EditQueueServlet extends HttpServlet {
     String username = user.getUsername();
     List<Queue> userQueues = queueManager.getQueuesByUsername(username);
     request.setAttribute("queues", userQueues);
-    request.getRequestDispatcher("EditMyQueueSelected.jsp").forward(request, response);
+    request.getRequestDispatcher("EditQueueSelected.jsp").forward(request, response);
   }
 }
