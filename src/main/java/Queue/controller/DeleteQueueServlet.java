@@ -1,6 +1,6 @@
 package Queue.controller;
 
-import java.util.List;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,11 +30,11 @@ public class DeleteQueueServlet extends HttpServlet {
       User user = (User) session.getAttribute("user");
       if (user != null) {
         String username = user.getUsername();
-        List<Queue> userQueues = queueManager.getQueuesByUsername(username);
+        Set<Queue> userQueues = queueManager.getQueuesByUsername(username);
         request.setAttribute("queues", userQueues);
       }
     }
-    request.getRequestDispatcher("/EditQueueSelected.jsp").forward(request, response);
+    request.getRequestDispatcher("/EditSelectedQueue.jsp").forward(request, response);
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -48,7 +48,6 @@ public class DeleteQueueServlet extends HttpServlet {
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
       if (selectedQueue != null) {
         queueManager.deleteQueue(selectedQueue);
-        System.out.println("Очередь успешно удалена");
       }
     }
 

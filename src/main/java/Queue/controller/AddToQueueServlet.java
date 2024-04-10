@@ -1,8 +1,7 @@
 package Queue.controller;
 
 import java.io.IOException;
-import java.util.List;
-
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,32 +22,35 @@ public class AddToQueueServlet extends HttpServlet {
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);
     if (session != null) {
       User user = (User) session.getAttribute("user");
       if (user != null) {
         String username = user.getUsername();
-        List<Queue> userQueues = queueManager.getQueuesByUsername(username);
+        Set<Queue> userQueues = queueManager.getQueuesByUsername(username);
         request.setAttribute("queues", userQueues);
       }
     }
-    request.getRequestDispatcher("/EditQueueSelected.jsp").forward(request, response);
+    request.getRequestDispatcher("/EditSelectedQueue.jsp").forward(request, response);
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String selectedQueueName = request.getParameter("selectedQueue");
     String newItem = request.getParameter("newItem");
 
     if (selectedQueueName != null && newItem != null) {
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
-      if (selectedQueue != null) {
-        selectedQueue.addItem(newItem.trim());
+      if(selectedQueue.isBlocked()){
+        request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
+        return;
       }
+      if(selectedQueue.getItems().contains(newItem)){
+        request.getRequestDispatcher("/ItemIsAlreadyExist.jsp").forward(request, response);
+        return;
+      }
+      selectedQueue.addItem(newItem.trim());
       doGet(request, response);
     }
   }

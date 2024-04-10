@@ -13,7 +13,7 @@ import Queue.model.User;
 @WebServlet("/AllQueues")
 public class AllQueuesServlet extends HttpServlet {
 
-  QueueManager queueManager = null;
+  QueueManager queueManager;
 
   public void init(){
     queueManager = QueueManager.getInstance();

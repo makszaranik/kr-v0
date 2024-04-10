@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Queues</title>
+    <title>All Queues</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -26,7 +26,7 @@
         margin-top: 20px;
       }
 
-      select, input[type="submit"] {
+      select {
         width: 300px;
         padding: 8px;
         margin-bottom: 10px;
@@ -43,6 +43,7 @@
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        margin-right: 10px;
       }
 
       input[type="submit"]:hover {
@@ -53,13 +54,15 @@
 <body>
 <h1>My Queues</h1>
 
-<form action="ViewSelectedQueue" method="post">
+
+<form action="ViewSelectedActionForMyQueues" method="post">
     <select name="selectedQueue">
         <c:forEach var="queue" items="${queues}">
             <option value="${queue.name}">${queue.name}</option>
         </c:forEach>
     </select>
-    <input type="submit" value="View">
+    <input type="submit" name="action" value="View">
+    <input type="submit" name="action" value="ViewMyPosition">
 </form>
 
 </body>

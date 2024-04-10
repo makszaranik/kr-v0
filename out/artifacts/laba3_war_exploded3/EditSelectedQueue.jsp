@@ -35,7 +35,17 @@
         box-sizing: border-box;
       }
 
-      input[type="submit"] {
+      .red-button {
+        background-color: #ff0000;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .blue-button {
         background-color: #007bff;
         color: #fff;
         padding: 10px 20px;
@@ -45,22 +55,18 @@
         transition: background-color 0.3s ease;
       }
 
-      input[type="submit"]:hover {
+      .red-button:hover {
+        background-color: #d60000;
+      }
+
+      .blue-button:hover {
         background-color: #0056b3;
       }
     </style>
 </head>
 <body>
-<h1>Edit Queue</h1>
 
-<form action="DeleteQueueServlet" method="post">
-    <select name="selectedQueue">
-        <c:forEach var="queue" items="${queues}">
-            <option value="${queue.name}">${queue.name}</option>
-        </c:forEach>
-    </select>
-    <input type="submit" value="Delete Queue">
-</form>
+<h1>Edit Queue</h1>
 
 <form action="AddToQueueServlet" method="post">
     <select name="selectedQueue">
@@ -69,17 +75,44 @@
         </c:forEach>
     </select>
     <input type="text" name="newItem" placeholder="Enter new item">
-    <input type="submit" value="Add">
+    <input type="submit" class="blue-button" value="Add">
 </form>
 
-<form action="RemoveFromQueueServlet" method="post">
+<form action="RemoveFromQueue" method="post">
     <select name="selectedQueue">
         <c:forEach var="queue" items="${queues}">
             <option value="${queue.name}">${queue.name}</option>
         </c:forEach>
     </select>
     <input type="text" name="itemToRemove" placeholder="Enter item to remove">
-    <input type="submit" value="Remove">
+    <input type="submit" class="blue-button" value="Remove">
+</form>
+
+<form action="RemoveFromBegin" method="post">
+    <select name="selectedQueue">
+        <c:forEach var="queue" items="${queues}">
+            <option value="${queue.name}">${queue.name}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" class="blue-button" value="RemoveFromBegin">
+</form>
+
+<form action="BlockUnblockQueue" method="post">
+    <select name="selectedQueue">
+        <c:forEach var="queue" items="${queues}">
+            <option value="${queue.name}">${queue.name}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" class="red-button" name="action" value="Block/Unblock Queue">
+</form>
+
+<form action="DeleteQueueServlet" method="post">
+    <select name="selectedQueue">
+        <c:forEach var="queue" items="${queues}">
+            <option value="${queue.name}">${queue.name}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" class="red-button" value="Delete Queue">
 </form>
 
 </body>

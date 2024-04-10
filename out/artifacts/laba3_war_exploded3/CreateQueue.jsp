@@ -49,7 +49,7 @@
 </head>
 <body>
 <h2>Create Queue</h2>
-<form action="createQueue" method="post">
+<form action="CreateQueue" method="post">
     <label for="queueName">Queue Name:</label><br>
     <input type="text" id="queueName" name="queueName"><br>
     <input type="submit" value="Create Queue">

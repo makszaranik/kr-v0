@@ -8,12 +8,24 @@ public class Queue {
   private User creator;
   private List<User> users;
   private List<String> items;
+  private boolean isBlocked;
 
   public Queue(String name, User creator) {
     this.name = name;
     this.creator = creator;
     this.users = new ArrayList<>();
     this.items = new ArrayList<>();
+  }
+
+  public boolean isBlocked() {
+    return isBlocked;
+  }
+  public boolean isEmpty(){
+    return items.isEmpty();
+  }
+
+  public void setBlocked(boolean blocked) {
+    isBlocked = blocked;
   }
 
   public String getName() {
@@ -28,26 +40,9 @@ public class Queue {
     return creator;
   }
 
-  public void setCreator(User creator) {
-    this.creator = creator;
-  }
-
-  public List<User> getUsers() {
-    return users;
-  }
-
   public void addUser(User user) {
     users.add(user);
   }
-
-  public void removeUser(User user) {
-    users.remove(user);
-  }
-
-  public boolean isCreator(User user) {
-    return this.creator.equals(user);
-  }
-
 
   public List<String> getItems() {
     return items;
@@ -60,4 +55,9 @@ public class Queue {
   public void removeItem(String item) {
     items.remove(item);
   }
+
+  public void removeFirstItem(){
+    items.remove(0);
+  }
+
 }

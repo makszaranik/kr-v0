@@ -13,7 +13,7 @@ import Queue.model.User;
 
 import java.io.IOException;
 
-@WebServlet("/ViewSelectedQueue")
+@WebServlet("/ViewMyQueueSelected")
 public class ViewMyQueueSelectedServlet extends HttpServlet {
 
   QueueManager queueManager;
@@ -35,7 +35,7 @@ public class ViewMyQueueSelectedServlet extends HttpServlet {
         request.setAttribute("selectedQueue", selectedQueue);
         request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
       } else {
-        request.getRequestDispatcher("NothingToShow.jsp").forward(request, response);
+        request.getRequestDispatcher("NothingToShowQueueIsEmpty.jsp").forward(request, response);
       }
     }
   }

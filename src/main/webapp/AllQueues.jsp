@@ -43,6 +43,7 @@
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        margin-right: 10px;
       }
 
       input[type="submit"]:hover {
@@ -53,14 +54,17 @@
 <body>
 <h1>All Queues</h1>
 
-<form action="ViewSelectedQueue" method="post">
+<form action="ViewSelectedActionForAllQueues" method="post">
     <select name="selectedQueue">
         <c:forEach var="queue" items="${queues}">
             <option value="${queue.name}">${queue.name}</option>
         </c:forEach>
     </select>
-    <input type="submit" value="View">
+    <input type="submit" name="action" value="View">
+    <input type="submit" name="action" value="ViewMyPosition">
 </form>
+
+
 
 </body>
 </html>

@@ -1,13 +1,13 @@
 package Queue.controller;
 
 import java.io.IOException;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import Queue.model.Queue;
 import Queue.model.QueueManager;
 import Queue.model.User;
@@ -33,8 +33,8 @@ public class EditQueueServlet extends HttpServlet {
     }
 
     String username = user.getUsername();
-    List<Queue> userQueues = queueManager.getQueuesByUsername(username);
+    Set<Queue> userQueues = queueManager.getQueuesByUsername(username);
     request.setAttribute("queues", userQueues);
-    request.getRequestDispatcher("EditQueueSelected.jsp").forward(request, response);
+    request.getRequestDispatcher("EditSelectedQueue.jsp").forward(request, response);
   }
 }

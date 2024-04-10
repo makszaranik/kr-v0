@@ -1,5 +1,6 @@
 package Queue.view;
 
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,28 +13,37 @@ import Queue.model.QueueManager;
 import Queue.model.User;
 
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/ViewAllQueues")
+@WebServlet("/ViewAllQueueSelected")
 public class ViewAllQueueSelectedServlet extends HttpServlet {
 
+  QueueManager queueManager;
+  public void init(){
+    queueManager = QueueManager.getInstance();
+  }
+
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String selectedQueueName = request.getParameter("selectedQueue");
+
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-    if (user != null) {
-      QueueManager queueManager = QueueManager.getInstance();
-      List<Queue> allQueues = queueManager.getQueues();
+    if (user != null && selectedQueueName != null) {
+      Set<Queue> queues = queueManager.getQueues();
 
-      if (!allQueues.isEmpty()) {
-        request.setAttribute("selectedQueue", allQueues);
-        request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
-      } else {
-        request.getRequestDispatcher("NothingToShow.jsp").forward(request, response);
+      for(Queue queue : queues){
+          if(queue.getName().equals(selectedQueueName)){
+            Queue selectedQueue = queue;
+              if (!selectedQueue.getItems().isEmpty()) {
+                request.setAttribute("selectedQueue", selectedQueue);
+                request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
+              }else {
+                request.getRequestDispatcher("NothingToShowQueueIsEmpty.jsp").forward(request, response);
+            }
+              break;
+          }
       }
-    } else {
-      response.sendRedirect("LoginPage.jsp");
     }
   }
 }

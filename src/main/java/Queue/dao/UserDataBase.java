@@ -12,7 +12,7 @@ public class UserDataBase implements UserDAO {
   private UserDataBase() {}
 
 
-  public static synchronized UserDataBase getInstance() {
+  public static UserDataBase getInstance() {
     if (instance == null) {
       instance = new UserDataBase();
     }

@@ -24,6 +24,7 @@
         padding: 5px 10px;
         border-radius: 5px;
         transition: background-color 0.3s ease;
+        margin-right: 10px;
       }
 
       .header a:hover {
@@ -41,6 +42,7 @@
     }
 %>
 <div class="header">
+    <a href="MainPage.jsp">Main Page</a>
     <% if (user != null) { %>
     <span>Welcome, <%= session.getAttribute("username") %>!</span>
     <% } %>

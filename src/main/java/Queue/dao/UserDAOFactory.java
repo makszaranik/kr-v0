@@ -8,10 +8,8 @@ public class UserDAOFactory {
     public static UserDAOFactory getInstance(){
         if(instance == null){
           instance = new UserDAOFactory();
-          return instance;
-        }else{
-          return instance;
         }
+        return instance;
     }
 
     public UserDAO getUserDAO(){

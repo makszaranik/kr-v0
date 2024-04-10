@@ -1,6 +1,6 @@
 package Queue.controller;
 
-import java.util.List;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +14,7 @@ import Queue.model.User;
 
 import java.io.IOException;
 
-@WebServlet("/RemoveFromQueueServlet")
+@WebServlet("/RemoveFromQueue")
 public class RemoveFromQueueServlet extends HttpServlet {
   private QueueManager queueManager = null;
 
@@ -30,11 +30,11 @@ public class RemoveFromQueueServlet extends HttpServlet {
       User user = (User) session.getAttribute("user");
       if (user != null) {
         String username = user.getUsername();
-        List<Queue> userQueues = queueManager.getQueuesByUsername(username);
+        Set<Queue> userQueues = queueManager.getQueuesByUsername(username);
         request.setAttribute("queues", userQueues);
       }
     }
-    request.getRequestDispatcher("/EditQueueSelected.jsp").forward(request, response);
+    request.getRequestDispatcher("/EditSelectedQueue.jsp").forward(request, response);
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -47,9 +47,11 @@ public class RemoveFromQueueServlet extends HttpServlet {
 
     if (user != null && selectedQueueName != null && itemToRemove != null) {
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
-      if (selectedQueue != null) {
-        selectedQueue.removeItem(itemToRemove.trim());
+      if(selectedQueue.isBlocked()){
+        request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
+        return;
       }
+      selectedQueue.removeItem(itemToRemove.trim());
     }
 
     doGet(request, response);

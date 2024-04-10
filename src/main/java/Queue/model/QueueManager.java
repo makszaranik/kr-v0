@@ -1,14 +1,14 @@
 package Queue.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class QueueManager {
   private static QueueManager instance;
-  private List<Queue> queues;
+  private Set<Queue> queues;
 
   private QueueManager() {
-    this.queues = new ArrayList<>();
+    this.queues = new HashSet<>();
   }
 
   public static synchronized QueueManager getInstance() {
@@ -18,7 +18,7 @@ public class QueueManager {
     return instance;
   }
 
-  public List<Queue> getQueues() {
+  public Set<Queue> getQueues() {
     return queues;
   }
 
@@ -32,8 +32,8 @@ public class QueueManager {
     queues.remove(queue);
   }
 
-  public List<Queue> getQueuesByUsername(String username) {
-    List<Queue> userQueues = new ArrayList<>();
+  public Set<Queue> getQueuesByUsername(String username) {
+    Set<Queue> userQueues = new HashSet<>();
     for (Queue queue : queues) {
       if (queue.getCreator().getUsername().equals(username)) {
         userQueues.add(queue);
@@ -51,4 +51,20 @@ public class QueueManager {
     return null;
   }
 
+  public boolean IsExist(String queueName) {
+    for (Queue queue : queues) {
+      if (queue.getName().equals(queueName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public void blockQueue(Queue queue) {
+    queue.setBlocked(true);
+  }
+
+  public void unblockQueue(Queue queue) {
+    queue.setBlocked(false);
+  }
 }

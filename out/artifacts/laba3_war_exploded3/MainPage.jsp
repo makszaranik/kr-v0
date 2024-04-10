@@ -52,9 +52,10 @@
 <body>
 <h2>Main Page</h2>
 <ul>
-    <li><a href="CreateQueue.jsp">Create Queue</a></li>
-    <li><a href="Queues.jsp">View Queues</a></li>
+    <li><a href="CreateQueue">Create Queue</a></li>
+    <li><a href="ViewQueues">View Queues</a></li>
     <li><a href="EditQueue">Edit Queues</a></li>
+    <li><a href="AddUserInQueueByHimself">Add me in queue</a></li>
 </ul>
 </body>
 </html>
