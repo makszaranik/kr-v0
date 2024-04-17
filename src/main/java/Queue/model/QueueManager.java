@@ -11,7 +11,7 @@ public class QueueManager {
     this.queues = new HashSet<>();
   }
 
-  public static synchronized QueueManager getInstance() {
+  public static QueueManager getInstance() {
     if (instance == null) {
       instance = new QueueManager();
     }

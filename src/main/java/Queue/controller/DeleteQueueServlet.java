@@ -16,15 +16,16 @@ import java.io.IOException;
 
 @WebServlet("/DeleteQueueServlet")
 public class DeleteQueueServlet extends HttpServlet {
-  private QueueManager queueManager = null;
 
+  private QueueManager queueManager;
+
+  @Override
   public void init() {
     queueManager = QueueManager.getInstance();
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);
     if (session != null) {
       User user = (User) session.getAttribute("user");
@@ -37,14 +38,18 @@ public class DeleteQueueServlet extends HttpServlet {
     request.getRequestDispatcher("/EditSelectedQueue.jsp").forward(request, response);
   }
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String selectedQueueName = request.getParameter("selectedQueue");
 
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-    if (user != null && selectedQueueName != null) {
+    if(selectedQueueName == null || selectedQueueName.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
+    }
+
+    if (user != null) {
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
       if (selectedQueue != null) {
         queueManager.deleteQueue(selectedQueue);

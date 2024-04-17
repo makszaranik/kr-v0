@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Successfully Blocked</title>
+    <title>Queue Successfully Unblocked</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -17,7 +17,7 @@
       }
 
       .container {
-        background-color: #fff;
+        background-color: #99ff99;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 20px;

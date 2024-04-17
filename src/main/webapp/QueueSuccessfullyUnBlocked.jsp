@@ -48,7 +48,7 @@
 <div class="container">
     <h1>Queue Successfully Unblocked</h1>
     <p>The queue has been successfully unblocked.</p>
-    <a href="/EditQueue">Back to Edit Queue</a>
+    <a href="EditQueue">Back to Edit Queue</a>
 </div>
 </body>
 </html>

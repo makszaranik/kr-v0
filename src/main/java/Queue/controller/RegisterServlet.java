@@ -13,15 +13,15 @@ import Queue.model.User;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+
   private UserDAOFactory userDAOFactory;
 
-
+  @Override
   public void init(){
       userDAOFactory = UserDAOFactory.getInstance();
   }
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
 
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     String confirmPassword = request.getParameter("confirm_password");

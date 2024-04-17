@@ -26,18 +26,20 @@ public class ViewSelectedActionForMyQueuesServlet extends HttpServlet {
       viewQueue(request, response);
     } else if ("ViewMyPosition".equals(action)) {
       viewMyPosition(request, response);
-    } else {
-      // Handle invalid action
     }
   }
 
   private void viewQueue(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String selectedQueueName = request.getParameter("selectedQueue");
     Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
-    if (selectedQueue != null) {
-      request.setAttribute("selectedQueue", selectedQueue);
-      request.getRequestDispatcher("/ViewMyQueueSelected").forward(request, response);
+
+    if(selectedQueueName == null || selectedQueueName.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
     }
+
+    request.setAttribute("selectedQueue", selectedQueue);
+    request.getRequestDispatcher("/ViewMyQueueSelected").forward(request, response);
   }
 
   private void viewMyPosition(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

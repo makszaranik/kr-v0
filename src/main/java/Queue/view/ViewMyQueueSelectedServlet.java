@@ -17,6 +17,8 @@ import java.io.IOException;
 public class ViewMyQueueSelectedServlet extends HttpServlet {
 
   QueueManager queueManager;
+
+  @Override
   public void init(){
     queueManager = QueueManager.getInstance();
   }
@@ -28,10 +30,15 @@ public class ViewMyQueueSelectedServlet extends HttpServlet {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-    if (user != null && selectedQueueName != null) {
+    if(selectedQueueName == null || selectedQueueName.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
+    }
+
+    if (user != null) {
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
 
-      if (selectedQueue != null && !selectedQueue.getItems().isEmpty()) {
+      if (!selectedQueue.getItems().isEmpty()) {
         request.setAttribute("selectedQueue", selectedQueue);
         request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
       } else {

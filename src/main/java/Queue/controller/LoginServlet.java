@@ -15,6 +15,7 @@ public class LoginServlet extends HttpServlet {
 
   private UserDAOFactory userDAOFactory;
 
+  @Override
   public void init() {
     userDAOFactory = UserDAOFactory.getInstance();
   }

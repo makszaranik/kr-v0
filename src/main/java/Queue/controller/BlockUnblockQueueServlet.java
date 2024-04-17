@@ -13,6 +13,7 @@ import Queue.model.User;
 
 @WebServlet("/BlockUnblockQueue")
 public class BlockUnblockQueueServlet extends HttpServlet {
+
   QueueManager queueManager;
 
   @Override
@@ -26,7 +27,12 @@ public class BlockUnblockQueueServlet extends HttpServlet {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-    if (user != null && selectedQueueName != null) {
+    if(selectedQueueName == null || selectedQueueName.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
+    }
+
+    if (user != null) {
       Queue queue = queueManager.getQueueByName(selectedQueueName);
         boolean isBlocked = queue.isBlocked();
         if(isBlocked){

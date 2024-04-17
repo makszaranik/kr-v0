@@ -16,15 +16,16 @@ import java.io.IOException;
 
 @WebServlet("/RemoveFromQueue")
 public class RemoveFromQueueServlet extends HttpServlet {
-  private QueueManager queueManager = null;
 
+  private QueueManager queueManager;
+
+  @Override
   public void init() {
     queueManager = QueueManager.getInstance();
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);
     if (session != null) {
       User user = (User) session.getAttribute("user");
@@ -37,15 +38,20 @@ public class RemoveFromQueueServlet extends HttpServlet {
     request.getRequestDispatcher("/EditSelectedQueue.jsp").forward(request, response);
   }
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String selectedQueueName = request.getParameter("selectedQueue");
     String itemToRemove = request.getParameter("itemToRemove");
 
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-    if (user != null && selectedQueueName != null && itemToRemove != null) {
+    if(selectedQueueName == null || itemToRemove == null ||
+      selectedQueueName.trim().isEmpty() || itemToRemove.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
+    }
+
+    if (user != null) {
       Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
       if(selectedQueue.isBlocked()){
         request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
@@ -53,7 +59,6 @@ public class RemoveFromQueueServlet extends HttpServlet {
       }
       selectedQueue.removeItem(itemToRemove.trim());
     }
-
-    doGet(request, response);
+    request.getRequestDispatcher("/ItemSuccessfullyDeleted.jsp").forward(request, response);
   }
 }

@@ -46,9 +46,9 @@
 </head>
 <body>
 <div class="container">
-    <h1>Queue Successfully Unblocked</h1>
-    <p>The queue has been successfully unblocked.</p>
-    <a href="EditQueue">Back to Edit Queue</a>
+    <h1>Item Successfully Added</h1>
+    <p>The item has been successfully added.</p>
+    <a href="MainPage.jsp">Back to Main Page</a>
 </div>
 </body>
 </html>

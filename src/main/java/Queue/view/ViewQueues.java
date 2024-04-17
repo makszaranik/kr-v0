@@ -22,6 +22,7 @@ public class ViewQueues extends HttpServlet {
       response.sendRedirect("LoginPage.jsp");
       return;
     }
+
     request.getRequestDispatcher("/Queues.jsp").forward(request, response);
   }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Queue Successfully Unblocked</title>
+    <title>Item Is Already Exist</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -17,7 +17,7 @@
       }
 
       .container {
-        background-color: #99ff99;
+        background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 20px;
@@ -34,21 +34,23 @@
         margin-bottom: 20px;
       }
 
-      a {
+      .link a {
         color: #007bff;
         text-decoration: none;
       }
 
-      a:hover {
+      .link a:hover {
         text-decoration: underline;
       }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Queue Successfully Unblocked</h1>
-    <p>The queue has been successfully unblocked.</p>
-    <a href="EditQueue">Back to Edit Queue</a>
+    <h1>Empty form</h1>
+    <p>You have submitted an empty form, please fill out all fields and submit this form again.</p>
+    <div class="link">
+        <a href="MainPage.jsp">Back to Main</a>
+    </div>
 </div>
 </body>
 </html>

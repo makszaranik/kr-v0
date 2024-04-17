@@ -49,7 +49,7 @@
     <h1>Queue Is Blocked</h1>
     <p>The queue you are trying to access is currently blocked.</p>
     <p>Please contact the administrator</p>
-    <a href="/MainPage.jsp">Back to Main Page</a>
+    <a href="MainPage.jsp">Back to Main Page</a>
 </div>
 </body>
 </html>

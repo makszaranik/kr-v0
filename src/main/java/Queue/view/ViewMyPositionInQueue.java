@@ -15,12 +15,14 @@ import Queue.model.User;
 
 @WebServlet("/ViewMyPosition")
 public class ViewMyPositionInQueue extends HttpServlet {
+
   QueueManager queueManager;
 
   @Override
   public void init(){
     queueManager = QueueManager.getInstance();
   }
+
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession(false);

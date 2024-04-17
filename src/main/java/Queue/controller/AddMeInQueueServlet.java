@@ -45,18 +45,22 @@ public class AddMeInQueueServlet extends HttpServlet {
     User user = (User) session.getAttribute("user");
     String newItem = user.getUsername();
 
-    if (selectedQueueName != null && newItem != null) {
-      Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
-      if(selectedQueue.isBlocked()){
-          request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
-          return;
-      }
-      if(selectedQueue.getItems().contains(newItem)){
-        request.getRequestDispatcher("/ItemIsAlreadyExist.jsp").forward(request, response);
+    if(selectedQueueName == null || selectedQueueName.trim().isEmpty() ||
+        newItem == null || newItem.trim().isEmpty()){
+        request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
         return;
-      }
-      selectedQueue.addItem(newItem.trim());
-      response.sendRedirect("MainPage.jsp");
     }
+
+    Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
+    if(selectedQueue.isBlocked()){
+      request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
+      return;
+    }
+    if(selectedQueue.getItems().contains(newItem)){
+      request.getRequestDispatcher("/ItemIsAlreadyExist.jsp").forward(request, response);
+      return;
+    }
+    selectedQueue.addItem(newItem.trim());
+    request.getRequestDispatcher("/ItemSuccessfullyAdded.jsp").forward(request, response);
   }
 }

@@ -15,6 +15,7 @@ public class CreateQueueServlet extends HttpServlet {
 
   private QueueManager queueManager;
 
+  @Override
   public void init(){
     queueManager = QueueManager.getInstance();
   }
@@ -38,6 +39,12 @@ public class CreateQueueServlet extends HttpServlet {
 
     HttpSession session = request.getSession();
     User creator = (User) session.getAttribute("user");
+
+    if(queueName == null || queueName.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
+    }
+
 
     if(queueManager.IsExist(queueName)){
       request.getRequestDispatcher("/QueueIsAlreadyCreated.jsp").forward(request, response);

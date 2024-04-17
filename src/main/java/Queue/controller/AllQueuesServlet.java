@@ -15,6 +15,7 @@ public class AllQueuesServlet extends HttpServlet {
 
   QueueManager queueManager;
 
+  @Override
   public void init(){
     queueManager = QueueManager.getInstance();
   }

@@ -48,7 +48,7 @@
 <div class="container">
     <h1>Queue Successfully Blocked</h1>
     <p>The queue has been successfully blocked.</p>
-    <a href="/EditQueue">Back to Edit Queue</a>
+    <a href="EditQueue">Back to Edit Queue</a>
 </div>
 </body>
 </html>

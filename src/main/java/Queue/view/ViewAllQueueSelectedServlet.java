@@ -18,6 +18,8 @@ import java.io.IOException;
 public class ViewAllQueueSelectedServlet extends HttpServlet {
 
   QueueManager queueManager;
+
+  @Override
   public void init(){
     queueManager = QueueManager.getInstance();
   }
@@ -29,7 +31,12 @@ public class ViewAllQueueSelectedServlet extends HttpServlet {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-    if (user != null && selectedQueueName != null) {
+    if(selectedQueueName == null || selectedQueueName.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
+    }
+
+    if (user != null) {
       Set<Queue> queues = queueManager.getQueues();
 
       for(Queue queue : queues){

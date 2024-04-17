@@ -14,13 +14,13 @@ import Queue.model.User;
 
 @WebServlet("/MyQueues")
 public class MyQueuesServlet extends HttpServlet {
-  private QueueManager queueManager = null;
 
+  private QueueManager queueManager ;
 
+  @Override
   public void init(){
     queueManager = QueueManager.getInstance();
   }
-
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

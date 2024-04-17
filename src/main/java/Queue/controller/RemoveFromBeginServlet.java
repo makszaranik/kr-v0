@@ -14,8 +14,10 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/RemoveFromBegin")
 public class RemoveFromBeginServlet extends HttpServlet {
-  private QueueManager queueManager = null;
 
+  private QueueManager queueManager;
+
+  @Override
   public void init() {
     queueManager = QueueManager.getInstance();
   }
@@ -26,19 +28,23 @@ public class RemoveFromBeginServlet extends HttpServlet {
 
     if (user != null) {
       String selectedQueueName = request.getParameter("selectedQueue");
-      if (selectedQueueName != null) {
-        Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
-        if (selectedQueue != null) {
-          if (selectedQueue.isBlocked()) {
-            request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
-            return;
-          }
-          if(selectedQueue.isEmpty()){
-            request.getRequestDispatcher("/NothingToShowQueueIsEmpty.jsp").forward(request, response);
-            return;
-          }
-          selectedQueue.removeFirstItem();
+
+      if(selectedQueueName == null || selectedQueueName.trim().isEmpty()){
+        request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+        return;
+      }
+
+      Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
+      if (selectedQueue != null) {
+        if (selectedQueue.isBlocked()) {
+          request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
+          return;
         }
+        if(selectedQueue.isEmpty()){
+          request.getRequestDispatcher("/NothingToShowQueueIsEmpty.jsp").forward(request, response);
+          return;
+        }
+        selectedQueue.removeFirstItem();
       }
     }
     request.getRequestDispatcher("ItemSuccessfullyDeleted.jsp").forward(request, response);

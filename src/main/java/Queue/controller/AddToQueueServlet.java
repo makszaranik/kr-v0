@@ -15,8 +15,10 @@ import Queue.model.User;
 
 @WebServlet("/AddToQueueServlet")
 public class AddToQueueServlet extends HttpServlet {
-  private QueueManager queueManager = null;
 
+  private QueueManager queueManager;
+
+  @Override
   public void init() {
     queueManager = QueueManager.getInstance();
   }
@@ -40,18 +42,21 @@ public class AddToQueueServlet extends HttpServlet {
     String selectedQueueName = request.getParameter("selectedQueue");
     String newItem = request.getParameter("newItem");
 
-    if (selectedQueueName != null && newItem != null) {
-      Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
-      if(selectedQueue.isBlocked()){
-        request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
-        return;
-      }
-      if(selectedQueue.getItems().contains(newItem)){
-        request.getRequestDispatcher("/ItemIsAlreadyExist.jsp").forward(request, response);
-        return;
-      }
-      selectedQueue.addItem(newItem.trim());
-      doGet(request, response);
+    if(selectedQueueName == null || newItem == null ||
+        selectedQueueName.trim().isEmpty() || newItem.trim().isEmpty()){
+      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+      return;
     }
+    Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
+    if(selectedQueue.isBlocked()){
+      request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
+      return;
+    }
+    if(selectedQueue.getItems().contains(newItem)){
+      request.getRequestDispatcher("/ItemIsAlreadyExist.jsp").forward(request, response);
+      return;
+    }
+    selectedQueue.addItem(newItem.trim());
+    request.getRequestDispatcher("/ItemSuccessfullyAdded.jsp").forward(request, response);
   }
 }
