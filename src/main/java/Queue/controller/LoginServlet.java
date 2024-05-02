@@ -1,7 +1,7 @@
 package Queue.controller;
 
-import Queue.dao.UserDAO;
-import Queue.dao.UserDAOFactory;
+import Queue.dao.impl.InMemoryDaoFactory;
+import Queue.dao.UserDao;
 import Queue.model.User;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -10,14 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/login")
+@WebServlet("/Login")
 public class LoginServlet extends HttpServlet {
 
-  private UserDAOFactory userDAOFactory;
+  private UserDao userDao;
 
   @Override
-  public void init() {
-    userDAOFactory = UserDAOFactory.getInstance();
+  public void init() throws ServletException {
+    super.init();
+    this.userDao = (UserDao) getServletContext().getAttribute("userDao");
   }
 
   @Override
@@ -26,17 +27,18 @@ public class LoginServlet extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    UserDAO userDataBase = userDAOFactory.getUserDAO();
 
-    if (userDataBase.isUserExist(username, password)) {
+    User user = userDao.getByUsername(username);
+    if (user != null && user.getPassword().equals(password)) {
       request.getSession().setAttribute("username", username);
-      request.getSession().setAttribute("user", new User(username, password));
-      response.sendRedirect("/MainPage.jsp");
+      request.getSession().setAttribute("user", user);
+      response.sendRedirect("MainPage.jsp");
     } else {
-      request.getRequestDispatcher("/InvalidLoginOrPassword.jsp").forward(request, response);
+      request.setAttribute("loginFailed", true);
+      request.getRequestDispatcher("InvalidLoginOrPassword.jsp").forward(request, response);
     }
   }
 }

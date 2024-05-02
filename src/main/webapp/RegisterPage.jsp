@@ -74,10 +74,10 @@
 <body>
 <div class="container">
     <h2>Registration</h2>
-    <form action="register" method="post">
+    <form action="Register" method="post">
         Username: <input type="text" name="username"><br>
         Password: <input type="password" name="password"><br>
-        Confirm Password: <input type="password" name="confirm_password"><br>
+        Confirm Password: <input type="password" name="confirmPassword"><br>
         <input type="submit" value="Register">
     </form>
     <p>Already have an account? <a href="LoginPage.jsp">Login</a></p>

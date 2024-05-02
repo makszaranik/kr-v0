@@ -55,7 +55,7 @@
     <li><a href="CreateQueue">Create Queue</a></li>
     <li><a href="ViewQueues">View Queues</a></li>
     <li><a href="EditQueue">Edit Queues</a></li>
-    <li><a href="AddUserInQueueByHimself">Add me in queue</a></li>
+    <li><a href="AddMeInQueue">Add me in queue</a></li>
 </ul>
 </body>
 </html>

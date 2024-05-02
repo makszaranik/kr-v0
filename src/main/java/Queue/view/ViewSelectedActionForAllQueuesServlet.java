@@ -1,6 +1,5 @@
 package Queue.view;
 
-import Queue.model.QueueManager;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,7 +44,7 @@ public class ViewSelectedActionForAllQueuesServlet extends HttpServlet {
 
 
   private void viewMyPosition(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getRequestDispatcher("/ViewMyPosition").forward(request, response);
+    request.getRequestDispatcher("/ViewMyPositionInQueue").forward(request, response);
   }
 }
 

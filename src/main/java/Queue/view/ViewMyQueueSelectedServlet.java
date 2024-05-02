@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Queue.model.Queue;
-import Queue.model.QueueManager;
 import Queue.model.User;
 
 import java.io.IOException;

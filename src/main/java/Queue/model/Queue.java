@@ -9,17 +9,20 @@ public class Queue {
   private List<User> users;
   private List<String> items;
   private boolean isBlocked;
+  private Integer id;
 
   public Queue(String name, User creator) {
     this.name = name;
     this.creator = creator;
     this.users = new ArrayList<>();
     this.items = new ArrayList<>();
+    this.id = this.name.hashCode();
   }
 
   public boolean isBlocked() {
     return isBlocked;
   }
+
   public boolean isEmpty(){
     return items.isEmpty();
   }
@@ -32,12 +35,16 @@ public class Queue {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public Integer getId(){
+     return this.id;
   }
 
-  public User getCreator() {
-    return creator;
+  public void setId(Integer id){
+      this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public void addUser(User user) {
@@ -47,6 +54,9 @@ public class Queue {
   public List<String> getItems() {
     return items;
   }
+
+  public void setCreator(User creator) {this.creator = creator;}
+  public User getCreator() {return this.creator;}
 
   public void addItem(String item) {
     items.add(item);

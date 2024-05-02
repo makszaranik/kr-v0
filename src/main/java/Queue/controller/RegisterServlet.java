@@ -1,40 +1,47 @@
 package Queue.controller;
 
-import Queue.dao.UserDAO;
-import Queue.dao.UserDAOFactory;
-import Queue.dao.UserDataBase;
+import Queue.dao.DaoFactory;
+import Queue.dao.UserDao;
+import Queue.model.Role.RoleType;
+import Queue.model.User;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Queue.model.User;
 
-@WebServlet("/register")
+@WebServlet("/Register")
 public class RegisterServlet extends HttpServlet {
 
-  private UserDAOFactory userDAOFactory;
+  private UserDao userDao;
 
   @Override
-  public void init(){
-      userDAOFactory = UserDAOFactory.getInstance();
+  public void init() throws ServletException {
+    super.init();
+    DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
+    this.userDao = daoFactory.getUserDao();
   }
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    String confirmPassword = request.getParameter("confirm_password");
+    String confirmPassword = request.getParameter("confirmPassword");
 
-    if(!password.equals(confirmPassword)){
-        response.sendRedirect("/PasswordMismatch.jsp");
-        return;
+    if (!password.equals(confirmPassword)) {
+      response.sendRedirect("PasswordMismatch.jsp");
+      return;
     }
-    User user = new User(username, password);
-    UserDAO userDataBase = userDAOFactory.getUserDAO();
-    userDataBase.addUser(user);
+
+    if (userDao.getByUsername(username) != null) {
+      response.sendRedirect("UserExists.jsp");
+      return;
+    }
 
 
-    response.sendRedirect("/LoginPage.jsp");
+    User newUser = new User(username, password, RoleType.USER);
+    userDao.insert(newUser, true);
+
+    response.sendRedirect("LoginPage.jsp");
   }
 }

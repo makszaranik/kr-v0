@@ -1,7 +1,6 @@
 package Queue.view;
 
 import Queue.model.Queue;
-import Queue.model.QueueManager;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Queue.model.User;
 
-@WebServlet("/ViewMyPosition")
+@WebServlet("/ViewMyPositionInQueue")
 public class ViewMyPositionInQueue extends HttpServlet {
 
   QueueManager queueManager;
@@ -48,7 +47,7 @@ public class ViewMyPositionInQueue extends HttpServlet {
       List<String> itemsOfQueue = queue.getItems();
       Integer position = itemsOfQueue.indexOf(user.getUsername());
       if(position == -1){
-          request.getRequestDispatcher("/YouWereDeletedFromQueue.jsp").forward(request, response);
+          request.getRequestDispatcher("/YouWasDeletedFromQueue.jsp").forward(request, response);
       }else{
         request.setAttribute("UserPositionInQueue", position+1);
       }
