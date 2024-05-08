@@ -48,7 +48,7 @@
 <div class="container">
     <h1>You were removed from the queue, or you were not added</h1>
     <p>Your request to join the queue has been removed.</p>
-    <a href="AddUserInQueueByHimself">Back to Edit Queue</a>
+    <a href="MainPage.jsp">Back to Main page</a>
 </div>
 </body>
 </html>

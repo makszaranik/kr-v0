@@ -1,12 +1,11 @@
 package Queue.controller;
 
-import Queue.NameValidator.NameValidator;
-import Queue.dao.DaoFactory;
-import Queue.dao.QueueDao;
+import Queue.services.NameValidator.NameValidator;
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,16 +15,18 @@ import javax.servlet.http.HttpSession;
 
 import Queue.model.Queue;
 import Queue.model.User;
+import lombok.SneakyThrows;
 
 @WebServlet("/AddMeInQueue")
 public class AddMeInQueueServlet extends HttpServlet {
 
-  private QueueDao queueDao;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
+  @SneakyThrows
   public void init(){
-    DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
-    this.queueDao = daoFactory.getQueueDao();
+      super.init();
+      queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
   @Override
@@ -33,12 +34,9 @@ public class AddMeInQueueServlet extends HttpServlet {
     HttpSession session = request.getSession(false);
     if (session != null) {
       User user = (User) session.getAttribute("user");
+
       if (user != null) {
-        List<Queue> userQueues = (List<Queue>) queueDao
-            .findAll()
-            .stream()
-            .filter(queue -> queue.getCreator()
-                .equals(user));
+        List<Queue> userQueues = (List<Queue>) queueDaoService.getUserQueues(user.getUsername());
         request.setAttribute("queues", userQueues);
       }
     }
@@ -51,7 +49,9 @@ public class AddMeInQueueServlet extends HttpServlet {
     String selectedQueueName = request.getParameter("selectedQueue");
     HttpSession session = request.getSession(false);
     User user = (User) session.getAttribute("user");
+
     String newItem = user.getUsername();
+
 
     if(!NameValidator.isValidName(selectedQueueName)
         || !NameValidator.isValidName(newItem)){
@@ -59,18 +59,17 @@ public class AddMeInQueueServlet extends HttpServlet {
         return;
     }
 
-    Optional<Queue> selectedQueue = queueDao.findAll().stream().filter(queue -> queue.getName().equals(selectedQueueName)).findFirst();
-
-    if(selectedQueue.isPresent()){
-      if(selectedQueue.get().isBlocked()){
+    Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
+    if(selectedQueue != null){
+      if(selectedQueue.isBlocked()){
         request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
         return;
       }
-      if(selectedQueue.get().getItems().contains(newItem)){
+      if(selectedQueue.getItems().contains(newItem)){
         request.getRequestDispatcher("/ItemIsAlreadyExist.jsp").forward(request, response);
         return;
       }
-      selectedQueue.get().addItem(newItem.trim());
+      selectedQueue.addItem(newItem.trim());
       request.getRequestDispatcher("/ItemSuccessfullyAdded.jsp").forward(request, response);
     }
 

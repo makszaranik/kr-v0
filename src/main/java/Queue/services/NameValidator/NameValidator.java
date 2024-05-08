@@ -1,4 +1,4 @@
-package Queue.NameValidator;
+package Queue.services.NameValidator;
 
 public class NameValidator {
     public static boolean isValidName(String name){

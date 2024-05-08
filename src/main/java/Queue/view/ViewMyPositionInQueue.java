@@ -1,9 +1,11 @@
 package Queue.view;
 
 import Queue.model.Queue;
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,15 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Queue.model.User;
+import lombok.SneakyThrows;
 
 @WebServlet("/ViewMyPositionInQueue")
 public class ViewMyPositionInQueue extends HttpServlet {
 
-  QueueManager queueManager;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
+  @SneakyThrows
   public void init(){
-    queueManager = QueueManager.getInstance();
+    super.init();
+    queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
   @Override
@@ -28,8 +33,7 @@ public class ViewMyPositionInQueue extends HttpServlet {
     if (session != null) {
       User user = (User) session.getAttribute("user");
       if (user != null) {
-        String username = user.getUsername();
-        Set<Queue> userQueues = queueManager.getQueuesByUsername(username);
+        List<Queue> userQueues = (List<Queue>) queueDaoService.getUserQueues(user.getUsername());
         request.setAttribute("queues", userQueues);
       }
     }
@@ -41,11 +45,13 @@ public class ViewMyPositionInQueue extends HttpServlet {
     String selectedQueueName = request.getParameter("selectedQueue");
     HttpSession session = request.getSession(false);
     User user = (User) session.getAttribute("user");
-    Queue queue = queueManager.getQueueByName(selectedQueueName);
 
-    if (queue != null) {
-      List<String> itemsOfQueue = queue.getItems();
-      Integer position = itemsOfQueue.indexOf(user.getUsername());
+
+    Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
+
+    if (selectedQueue != null) {
+      List<String> itemsOfQueue = selectedQueue.getItems();
+      int position = itemsOfQueue.indexOf(user.getUsername());
       if(position == -1){
           request.getRequestDispatcher("/YouWasDeletedFromQueue.jsp").forward(request, response);
       }else{

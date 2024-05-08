@@ -1,11 +1,11 @@
 package Queue.controller;
 
-import Queue.NameValidator.NameValidator;
-import Queue.dao.DaoFactory;
-import Queue.dao.QueueDao;
+import Queue.services.NameValidator.NameValidator;
 import Queue.model.Queue;
 import Queue.model.User;
 
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
 import java.util.Optional;
 import javax.servlet.ServletException;
@@ -14,21 +14,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.SneakyThrows;
 
 @WebServlet("/RemoveFromBegin")
 public class RemoveItemFromBeginServlet extends HttpServlet {
 
-  private QueueDao queueDao;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
-  public void init() {
-    DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
-    this.queueDao = daoFactory.getQueueDao();
+  @SneakyThrows
+  public void init(){
+    super.init();
+    queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
+
 
     if (user != null) {
       String selectedQueueName = request.getParameter("selectedQueue");
@@ -38,19 +41,14 @@ public class RemoveItemFromBeginServlet extends HttpServlet {
         return;
       }
 
-      Optional<Queue> selectedQueue = queueDao
-          .findAll()
-          .stream()
-          .filter(queue -> queue.getName()
-              .equals(selectedQueueName))
-          .findFirst();
+      Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
 
-      if (selectedQueue.isPresent()) {
-        if (selectedQueue.get().isBlocked()) {
+      if (selectedQueue != null) {
+        if (selectedQueue.isBlocked()) {
           request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
           return;
         }
-        selectedQueue.get().removeFirstItem();
+        selectedQueue.removeFirstItem();
         request.getRequestDispatcher("ItemSuccessfullyDeleted.jsp").forward(request, response);
       }else {
         request.getRequestDispatcher("/NothingToShowQueueIsEmpty.jsp").forward(request, response);

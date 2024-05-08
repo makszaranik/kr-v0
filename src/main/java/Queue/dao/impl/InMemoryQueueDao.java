@@ -2,10 +2,9 @@ package Queue.dao.impl;
 
 import Queue.dao.QueueDao;
 import Queue.model.Queue;
-import Queue.model.User;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.stream.Collectors;
+
+
 
 public class InMemoryQueueDao extends InMemoryAbstractDao<Queue> implements QueueDao {
 
@@ -14,26 +13,27 @@ public class InMemoryQueueDao extends InMemoryAbstractDao<Queue> implements Queu
   }
 
   @Override
-  public Collection<Queue> findQueueById(Integer id) {
-    return database.queues.values().stream()
-        .filter(queue -> queue.getId().equals(id))
-        .collect(Collectors.toList());
+  public Collection<Queue> findAll() {
+     return super.findAll();
   }
 
   @Override
-  public void addQueue(User user, Queue queue) {
-    queue.setCreator(user);
-    insert(queue, true);
+  public void insert(Queue queue, boolean generateId) {
+    super.insert(queue, generateId);
   }
 
   @Override
-  public void deleteQueue(Queue queue) {
-    Iterator<Queue> it = database.queues.values().iterator();
-    while (it.hasNext()) {
-      if (it.next().equals(queue)) {
-        it.remove();
-        break;
-      }
-    }
+  public void delete(Queue queue){
+      super.delete(queue);
+  }
+
+  @Override
+  public void update(Queue queue){
+    super.update(queue);
+  }
+
+  @Override
+  public Queue get(Integer id){
+    return super.get(id);
   }
 }

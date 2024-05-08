@@ -1,29 +1,31 @@
 package Queue.controller;
 
-import Queue.dao.DaoFactory;
-import Queue.dao.QueueDao;
 import Queue.model.Queue;
 import Queue.model.User;
-import Queue.NameValidator.NameValidator;
+import Queue.services.NameValidator.NameValidator;
 
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.SneakyThrows;
 
 @WebServlet("/CreateQueue")
 public class CreateQueueServlet extends HttpServlet {
 
-  private QueueDao queueDao;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
-  public void init() throws ServletException {
+  @SneakyThrows
+  public void init() {
     super.init();
-    DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
-    this.queueDao = daoFactory.getQueueDao();
+    queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
   @Override
@@ -39,22 +41,29 @@ public class CreateQueueServlet extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String queueName = request.getParameter("queueName");
+    String selectedQueueName = request.getParameter("queueName");
     HttpSession session = request.getSession();
     User creator = (User) session.getAttribute("user");
 
-    if (!NameValidator.isValidName(queueName)) {
+    if (creator == null) {
+      response.sendRedirect("LoginPage.jsp");
+      return;
+    }
+
+    if (!NameValidator.isValidName(selectedQueueName)) {
       request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
       return;
     }
 
-    Queue newQueue = new Queue(queueName, creator);
-    if (queueDao.findQueueById(newQueue.getId()) != null) {
+    Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
+
+    if(selectedQueue != null){
       request.getRequestDispatcher("/QueueIsAlreadyCreated.jsp").forward(request, response);
       return;
     }
 
-    queueDao.addQueue(creator, newQueue);
+    Queue newQueue = new Queue(selectedQueueName, creator);
+    queueDaoService.addQueueToUser(creator, newQueue);
     response.sendRedirect("/MainPage.jsp");
   }
 }

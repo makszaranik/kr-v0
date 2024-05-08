@@ -1,5 +1,9 @@
 package Queue.view;
 
+import Queue.services.NameValidator.NameValidator;
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
+import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,38 +15,44 @@ import Queue.model.Queue;
 import Queue.model.User;
 
 import java.io.IOException;
+import lombok.SneakyThrows;
 
 @WebServlet("/ViewMyQueueSelected")
 public class ViewMyQueueSelectedServlet extends HttpServlet {
 
-  QueueManager queueManager;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
+  @SneakyThrows
   public void init(){
-    queueManager = QueueManager.getInstance();
+    super.init();
+    queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String selectedQueueName = request.getParameter("selectedQueue");
+      String selectedQueueName = request.getParameter("selectedQueue");
 
-    HttpSession session = request.getSession();
-    User user = (User) session.getAttribute("user");
+      HttpSession session = request.getSession();
+      User user = (User) session.getAttribute("user");
 
-    if(selectedQueueName == null || selectedQueueName.trim().isEmpty()){
-      request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
-      return;
-    }
 
-    if (user != null) {
-      Queue selectedQueue = queueManager.getQueueByName(selectedQueueName);
+      if(!NameValidator.isValidName(selectedQueueName)){
+          request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
+          return;
+        }
 
-      if (!selectedQueue.getItems().isEmpty()) {
-        request.setAttribute("selectedQueue", selectedQueue);
-        request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
-      } else {
-        request.getRequestDispatcher("NothingToShowQueueIsEmpty.jsp").forward(request, response);
-      }
-    }
+        if (user != null) {
+          Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
+
+        if(selectedQueue != null){
+          if (!selectedQueue.getItems().isEmpty()) {
+            request.setAttribute("selectedQueue", selectedQueue);
+            request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
+          } else {
+            request.getRequestDispatcher("NothingToShowQueueIsEmpty.jsp").forward(request, response);
+          }
+        }
+     }
   }
 }

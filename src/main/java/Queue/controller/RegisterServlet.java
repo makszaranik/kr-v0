@@ -1,46 +1,48 @@
 package Queue.controller;
 
-import Queue.dao.DaoFactory;
-import Queue.dao.UserDao;
 import Queue.model.Role.RoleType;
 import Queue.model.User;
+import Queue.services.DaoServices.AbstractUserDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 
 @WebServlet("/Register")
 public class RegisterServlet extends HttpServlet {
 
-  private UserDao userDao;
+  private AbstractUserDaoService userDaoService;
 
   @Override
-  public void init() throws ServletException {
+  @SneakyThrows
+  public void init() {
     super.init();
-    DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
-    this.userDao = daoFactory.getUserDao();
+    this.userDaoService = ServiceFactory.getUserDaoService();
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    String confirmPassword = request.getParameter("confirmPassword");
+    String confirmPassword = request.getParameter("confirm_password");
+
 
     if (!password.equals(confirmPassword)) {
       response.sendRedirect("PasswordMismatch.jsp");
       return;
     }
 
-    if (userDao.getByUsername(username) != null) {
+    if (userDaoService.isExist(username)) {
       response.sendRedirect("UserExists.jsp");
       return;
     }
 
 
     User newUser = new User(username, password, RoleType.USER);
-    userDao.insert(newUser, true);
+    userDaoService.createUser(newUser);
 
     response.sendRedirect("LoginPage.jsp");
   }

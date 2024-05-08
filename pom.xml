@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.example</groupId>
-  <artifactId>kr</artifactId>
+  <artifactId>laba3</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>laba3</name>
   <packaging>war</packaging>
@@ -37,6 +37,14 @@
       <artifactId>jersey-media-json-jackson</artifactId>
       <version>3.0.4</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok-maven-plugin</artifactId>
+      <version>1.18.20.0</version>
+      <scope>provided</scope>
+    </dependency>
+
 
     <dependency>
       <groupId>javax.servlet</groupId>

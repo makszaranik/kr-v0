@@ -1,8 +1,8 @@
 package Queue.controller;
 
-import Queue.dao.DaoFactory;
-import Queue.dao.QueueDao;
-import Queue.NameValidator.NameValidator;
+import Queue.services.NameValidator.NameValidator;
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,17 +14,18 @@ import Queue.model.User;
 
 import java.io.IOException;
 import java.util.Optional;
+import lombok.SneakyThrows;
 
 @WebServlet("/DeleteQueueServlet")
 public class DeleteQueueServlet extends HttpServlet {
 
-  private QueueDao queueDao;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
-  public void init() throws ServletException {
+  @SneakyThrows
+  public void init(){
     super.init();
-    DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
-    this.queueDao = daoFactory.getQueueDao();
+    queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
   @Override
@@ -33,7 +34,7 @@ public class DeleteQueueServlet extends HttpServlet {
     if (session != null) {
       User user = (User) session.getAttribute("user");
       if (user != null) {
-        request.setAttribute("queues", queueDao.findAll());
+        request.setAttribute("queues", queueDaoService.getAllQueues());
       }
     }
     request.getRequestDispatcher("/EditSelectedQueue.jsp").forward(request, response);
@@ -44,18 +45,17 @@ public class DeleteQueueServlet extends HttpServlet {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
+
     if(!NameValidator.isValidName(selectedQueueName)){
       request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
       return;
     }
 
     if (user != null) {
-      Optional<Queue> selectedQueue = queueDao.findAll().stream()
-          .filter(q -> q.getName().equals(selectedQueueName))
-          .findFirst();
+      Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
 
-      if (selectedQueue.isPresent()) {
-          queueDao.delete(selectedQueue.get());
+      if (selectedQueue != null) {
+          queueDaoService.delete(selectedQueue);
           doGet(request, response);
       } else {
         request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);

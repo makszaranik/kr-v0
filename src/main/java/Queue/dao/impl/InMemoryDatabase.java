@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class InMemoryDatabase {
-  Map<Integer, Queue> queues = new TreeMap();
-  Map<Integer, User> users = new TreeMap();
+  Map<Integer, Queue> queues = new TreeMap<>();
+  Map<Integer, User> users = new TreeMap<>();
 
   public InMemoryDatabase() {}
 

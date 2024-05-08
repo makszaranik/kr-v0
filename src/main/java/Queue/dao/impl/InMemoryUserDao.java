@@ -1,7 +1,9 @@
 package Queue.dao.impl;
 
 import Queue.dao.UserDao;
+import Queue.model.Queue;
 import Queue.model.User;
+import java.util.Collection;
 
 public class InMemoryUserDao extends InMemoryAbstractDao<User> implements UserDao {
   public InMemoryUserDao(InMemoryDatabase database) {
@@ -9,18 +11,27 @@ public class InMemoryUserDao extends InMemoryAbstractDao<User> implements UserDa
   }
 
   @Override
-  public User getByUsername(String username) {
-    return this.database.users.values().stream()
-        .filter(user -> user.getUsername().equals(username))
-        .findFirst()
-        .orElse(null);
+  public Collection<User> findAll() {
+     return super.findAll();
   }
 
   @Override
-  public void insert(User user) {
-    if (getByUsername(user.getUsername()) != null) {
-      throw new IllegalArgumentException("User with username " + user.getUsername() + " already exists.");
-    }
-    insert(user, true);
+  public void insert(User user, boolean generateId) {
+    super.insert(user, generateId);
+  }
+
+  @Override
+  public void delete(User user){
+    super.delete(user);
+  }
+
+  @Override
+  public void update(User user){
+    super.update(user);
+  }
+
+  @Override
+  public User get(Integer id){
+    return super.get(id);
   }
 }

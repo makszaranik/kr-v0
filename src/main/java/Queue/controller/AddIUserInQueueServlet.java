@@ -1,8 +1,8 @@
 package Queue.controller;
 
-import Queue.NameValidator.NameValidator;
-import Queue.dao.DaoFactory;
-import Queue.dao.QueueDao;
+import Queue.services.NameValidator.NameValidator;
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -17,13 +17,12 @@ import Queue.model.*;
 @WebServlet("/AddToQueueServlet")
 public class AddIUserInQueueServlet extends HttpServlet {
 
-  private QueueDao queueDao;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
   public void init() throws ServletException {
       super.init();
-      DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
-      this.queueDao = daoFactory.getQueueDao();
+      this.queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
 
@@ -33,11 +32,7 @@ public class AddIUserInQueueServlet extends HttpServlet {
     if (session != null) {
       User user = (User) session.getAttribute("user");
       if (user != null) {
-        List<Queue> userQueues = (List<Queue>) queueDao
-            .findAll()
-            .stream()
-            .filter(queue -> queue.getCreator()
-                .equals(user));
+        List<Queue> userQueues = (List<Queue>) queueDaoService.getUserQueues(user.getUsername());
         request.setAttribute("queues", userQueues);
       }
     }
@@ -56,23 +51,18 @@ public class AddIUserInQueueServlet extends HttpServlet {
       return;
     }
 
-    Optional<Queue> selectedQueue = queueDao
-        .findAll()
-        .stream()
-        .filter(queue -> queue.getName()
-            .equals(selectedQueueName))
-        .findFirst();
+    Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
 
-    if(selectedQueue.isPresent()){
-        if(selectedQueue.get().isBlocked()){
+    if(selectedQueue != null){
+        if(selectedQueue.isBlocked()){
           request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
           return;
         }
-        if(selectedQueue.get().getItems().contains(newItem)){
+        if(selectedQueue.getItems().contains(newItem)){
           request.getRequestDispatcher("/ItemIsAlreadyExist.jsp").forward(request, response);
           return;
         }
-        selectedQueue.get().addItem(newItem.trim());
+        selectedQueue.addItem(newItem.trim());
         request.getRequestDispatcher("/ItemSuccessfullyAdded.jsp").forward(request, response);
       }
     }

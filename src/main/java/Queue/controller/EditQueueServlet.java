@@ -1,12 +1,9 @@
 package Queue.controller;
 
-import Queue.dao.DaoFactory;
-import Queue.dao.QueueDao;
-import Queue.dao.UserDao;
+import Queue.services.DaoServices.AbstractQueueDaoService;
+import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,17 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Queue.model.Queue;
 import Queue.model.User;
+import lombok.SneakyThrows;
 
 @WebServlet("/EditQueue")
 public class EditQueueServlet extends HttpServlet {
 
-  private QueueDao queueDao;
+  private AbstractQueueDaoService queueDaoService;
 
   @Override
-  public void init() throws ServletException {
+  @SneakyThrows
+  public void init(){
     super.init();
-    DaoFactory daoFactory = (DaoFactory) getServletContext().getAttribute("daoFactory");
-    this.queueDao = daoFactory.getQueueDao();
+    queueDaoService = ServiceFactory.getQueueDaoService();
   }
 
 
@@ -39,11 +37,7 @@ public class EditQueueServlet extends HttpServlet {
       return;
     }
 
-    List<Queue> userQueues = (List<Queue>) queueDao
-        .findAll()
-        .stream()
-        .filter(queue -> queue.getCreator()
-            .equals(user));
+    List<Queue> userQueues = (List<Queue>) queueDaoService.getUserQueues(user.getUsername());
 
     request.setAttribute("queues", userQueues);
     request.getRequestDispatcher("EditSelectedQueue.jsp").forward(request, response);

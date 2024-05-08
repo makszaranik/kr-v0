@@ -1,6 +1,7 @@
 package Queue.dao.impl;
 
 import Queue.dao.Dao;
+import Queue.model.Queue;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.BiConsumer;
