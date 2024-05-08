@@ -1,11 +1,10 @@
 package Queue.controller;
 
-import Queue.services.NameValidator.NameValidator;
+import Queue.services.NameValidatorService.NameValidatorService;
 import Queue.services.DaoServices.AbstractQueueDaoService;
 import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,8 +44,8 @@ public class AddIUserInQueueServlet extends HttpServlet {
     String selectedQueueName = request.getParameter("selectedQueue");
     String newItem = request.getParameter("newItem");
 
-    if(!NameValidator.isValidName(selectedQueueName)
-        || !NameValidator.isValidName(newItem)){
+    if(!NameValidatorService.isValidName(selectedQueueName)
+        || !NameValidatorService.isValidName(newItem)){
       request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
       return;
     }

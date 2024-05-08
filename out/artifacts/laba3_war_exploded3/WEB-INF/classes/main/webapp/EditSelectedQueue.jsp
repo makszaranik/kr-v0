@@ -68,52 +68,43 @@
 
 <h1>Edit Queue</h1>
 
-<form action="AddToQueueServlet" method="post">
+<style>
+  .section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+</style>
+
+<form action="EditQueue" method="post">
     <select name="selectedQueue">
         <c:forEach var="queue" items="${queues}">
             <option value="${queue.name}">${queue.name}</option>
         </c:forEach>
     </select>
-    <input type="text" name="newItem" placeholder="Enter new item">
-    <input type="submit" class="blue-button" value="Add">
+
+    <div class="section">
+        <input type="text" name="newItem" placeholder="Enter new item">
+        <input type="submit" name="action" value="Add" class="blue-button">
+    </div>
+
+    <div class="section">
+        <input type="text" name="itemToRemove" placeholder="Enter item to remove">
+        <input type="submit" name="action" value="RemoveItem" class="blue-button">
+    </div>
+
+    <div class="section">
+        <input type="submit" name="action" value="RemoveFirstItem" class="blue-button">
+    </div>
+
+    <div class="section">
+        <input type="submit" name="action" value="BlockOrUnblockQueue" class="red-button">
+    </div>
+
+    <div class="section">
+        <input type="submit" name="action" value="DeleteQueue" class="red-button">
+    </div>
 </form>
 
-<form action="RemoveFromQueue" method="post">
-    <select name="selectedQueue">
-        <c:forEach var="queue" items="${queues}">
-            <option value="${queue.name}">${queue.name}</option>
-        </c:forEach>
-    </select>
-    <input type="text" name="itemToRemove" placeholder="Enter item to remove">
-    <input type="submit" class="blue-button" value="Remove">
-</form>
-
-<form action="RemoveFromBegin" method="post">
-    <select name="selectedQueue">
-        <c:forEach var="queue" items="${queues}">
-            <option value="${queue.name}">${queue.name}</option>
-        </c:forEach>
-    </select>
-    <input type="submit" class="blue-button" value="RemoveFromBegin">
-</form>
-
-<form action="BlockUnblockQueue" method="post">
-    <select name="selectedQueue">
-        <c:forEach var="queue" items="${queues}">
-            <option value="${queue.name}">${queue.name}</option>
-        </c:forEach>
-    </select>
-    <input type="submit" class="red-button" name="action" value="Block/Unblock Queue">
-</form>
-
-<form action="DeleteQueueServlet" method="post">
-    <select name="selectedQueue">
-        <c:forEach var="queue" items="${queues}">
-            <option value="${queue.name}">${queue.name}</option>
-        </c:forEach>
-    </select>
-    <input type="submit" class="red-button" value="Delete Queue">
-</form>
 
 </body>
 </html>

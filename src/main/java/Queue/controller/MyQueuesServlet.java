@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Queue.model.*;
+import lombok.SneakyThrows;
 
 @WebServlet("/MyQueues")
 public class MyQueuesServlet extends HttpServlet {
@@ -19,7 +20,8 @@ public class MyQueuesServlet extends HttpServlet {
   private AbstractQueueDaoService queueDaoService;
 
   @Override
-  public void init() throws ServletException {
+  @SneakyThrows
+  public void init(){
     super.init();
     queueDaoService = ServiceFactory.getQueueDaoService();
   }

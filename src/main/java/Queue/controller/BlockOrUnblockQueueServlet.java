@@ -1,6 +1,6 @@
 package Queue.controller;
 
-import Queue.services.NameValidator.NameValidator;
+import Queue.services.NameValidatorService.NameValidatorService;
 import Queue.services.DaoServices.AbstractQueueDaoService;
 import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import Queue.model.Queue;
 import lombok.SneakyThrows;
 
 @WebServlet("/BlockUnblockQueue")
-public class BlockUnblockQueueServlet extends HttpServlet {
+public class BlockOrUnblockQueueServlet extends HttpServlet {
 
   private AbstractQueueDaoService queueDaoService;
 
@@ -33,7 +33,7 @@ public class BlockUnblockQueueServlet extends HttpServlet {
     User user = (User) session.getAttribute("user");
 
 
-    if (!NameValidator.isValidName(selectedQueueName)) {
+    if (!NameValidatorService.isValidName(selectedQueueName)) {
       request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
       return;
     }

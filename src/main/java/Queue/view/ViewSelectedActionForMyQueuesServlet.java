@@ -1,11 +1,10 @@
 package Queue.view;
 
-import Queue.services.NameValidator.NameValidator;
+import Queue.services.NameValidatorService.NameValidatorService;
 import Queue.model.Queue;
 import Queue.services.DaoServices.AbstractQueueDaoService;
 import Queue.services.DaoServices.impl.ServiceFactory;
 import java.io.IOException;
-import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +39,7 @@ public class ViewSelectedActionForMyQueuesServlet extends HttpServlet {
 
     Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
 
-    if(!NameValidator.isValidName(selectedQueueName)){
+    if(!NameValidatorService.isValidName(selectedQueueName)){
       request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
       return;
     }
