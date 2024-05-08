@@ -2,10 +2,9 @@ package Queue.view;
 
 import Queue.model.Queue;
 import Queue.services.DaoServices.AbstractQueueDaoService;
-import Queue.services.DaoServices.impl.ServiceFactory;
+import Queue.services.Factories.ServiceFactory;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

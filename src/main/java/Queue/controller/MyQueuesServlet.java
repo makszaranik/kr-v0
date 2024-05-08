@@ -1,10 +1,9 @@
 package Queue.controller;
 
 import Queue.services.DaoServices.AbstractQueueDaoService;
-import Queue.services.DaoServices.impl.ServiceFactory;
+import Queue.services.Factories.ServiceFactory;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +26,7 @@ public class MyQueuesServlet extends HttpServlet {
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet( HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession session = request.getSession();
 
     User user = (User) session.getAttribute("user");

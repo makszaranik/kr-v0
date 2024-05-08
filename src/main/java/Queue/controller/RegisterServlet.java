@@ -3,7 +3,7 @@ package Queue.controller;
 import Queue.model.Role.RoleType;
 import Queue.model.User;
 import Queue.services.DaoServices.AbstractUserDaoService;
-import Queue.services.DaoServices.impl.ServiceFactory;
+import Queue.services.Factories.ServiceFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

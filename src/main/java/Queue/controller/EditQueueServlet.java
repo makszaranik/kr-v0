@@ -1,12 +1,12 @@
 package Queue.controller;
 
+import Queue.model.Role.RoleType;
 import Queue.services.DaoServices.AbstractQueueDaoService;
-import Queue.services.DaoServices.impl.ServiceFactory;
-import Queue.services.NameValidatorService.NameValidatorService;
+import Queue.services.Factories.ServiceFactory;
+import Queue.services.RoleConfiguratorService.AbstractRoleConfiguratorService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,13 +21,14 @@ import lombok.SneakyThrows;
 public class EditQueueServlet extends HttpServlet {
 
   private AbstractQueueDaoService queueDaoService;
-
+  private AbstractRoleConfiguratorService roleConfiguratorService;
 
   @Override
   @SneakyThrows
   public void init(){
     super.init();
-    queueDaoService = ServiceFactory.getQueueDaoService();
+    this.queueDaoService = ServiceFactory.getQueueDaoService();
+    this.roleConfiguratorService = ServiceFactory.getRoleConfiguratorService();
   }
 
 
@@ -50,6 +51,20 @@ public class EditQueueServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String selectedAction = request.getParameter("action");
+    String selectedQueueName = request.getParameter("selectedQueue");
+    Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
+
+
+    HttpSession session = request.getSession();
+    User user = (User) session.getAttribute("user");
+
+
+    if(roleConfiguratorService.getConfiguration(user, selectedQueue) != RoleType.OWNER){
+      System.out.println(user.getRoleType());
+      response.sendRedirect("PermissionDenied.jsp");
+      return;
+    }
+
     switch (selectedAction){
       case "Add" :
         AddItemInQueue(request, response);
@@ -89,9 +104,9 @@ public class EditQueueServlet extends HttpServlet {
 
     @SneakyThrows
     protected void RemoveItemFromBeginOfQueue(HttpServletRequest request, HttpServletResponse response){
-        RemoveItemFromQueueServlet removeItemFromQueueServlet = new RemoveItemFromQueueServlet();
-        removeItemFromQueueServlet.init();
-        removeItemFromQueueServlet.doPost(request, response);
+        RemoveItemFromBeginServlet removeItemFromBeginServlet = new RemoveItemFromBeginServlet();
+        removeItemFromBeginServlet.init();
+        removeItemFromBeginServlet.doPost(request, response);
     }
 
     @SneakyThrows

@@ -2,7 +2,7 @@ package Queue.controller;
 
 import Queue.model.Queue;
 import Queue.services.DaoServices.AbstractQueueDaoService;
-import Queue.services.DaoServices.impl.ServiceFactory;
+import Queue.services.Factories.ServiceFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Queue.model.User;
 import lombok.SneakyThrows;
-import java.util.Optional;
 import java.util.Collection;
 
 @WebServlet("/AllQueues")

@@ -3,7 +3,7 @@ package Queue.web;
 import Queue.dao.DaoFactory;
 import Queue.dao.impl.InMemoryDatabase;
 import Queue.dao.impl.InMemoryTestData;
-import Queue.services.DaoServices.impl.ServiceFactory;
+import Queue.services.Factories.ServiceFactory;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;

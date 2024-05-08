@@ -1,8 +1,9 @@
 package Queue.view;
 
-import Queue.services.NameValidatorService.NameValidatorService;
+import Queue.services.NameValidatorService.AbstractNameValidatorService;
+import Queue.services.NameValidatorService.impl.NameValidatorService;
 import Queue.services.DaoServices.AbstractQueueDaoService;
-import Queue.services.DaoServices.impl.ServiceFactory;
+import Queue.services.Factories.ServiceFactory;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,12 +22,14 @@ import lombok.SneakyThrows;
 public class ViewAllQueueSelectedServlet extends HttpServlet {
 
   private AbstractQueueDaoService queueDaoService;
+  private AbstractNameValidatorService nameValidatorService;
 
   @Override
   @SneakyThrows
   public void init(){
     super.init();
-    queueDaoService = ServiceFactory.getQueueDaoService();
+    this.queueDaoService = ServiceFactory.getQueueDaoService();
+    this.nameValidatorService = ServiceFactory.getNameValidatorService();
   }
 
   @Override
@@ -37,7 +40,7 @@ public class ViewAllQueueSelectedServlet extends HttpServlet {
     User user = (User) session.getAttribute("user");
 
 
-    if(!NameValidatorService.isValidName(selectedQueueName)){
+    if(!nameValidatorService.isValidName(selectedQueueName)){
       request.getRequestDispatcher("/EmptyFormSubmitted.jsp").forward(request, response);
       return;
     }

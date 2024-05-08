@@ -16,9 +16,9 @@ public class InMemoryTestData {
     database.queues.clear();
 
 
-    User max = new User(1, "Max", "max123", "123", RoleType.USER);
-    User admin = new User(2, "admin", "admin", "admin", RoleType.ADMIN);
-    User lisa = new User(3, "Lisa", "lisa123", "password2", RoleType.GUEST);
+    User max = new User(1, "Max", "max123", "max123", RoleType.USER);
+    User admin = new User(2, "admin", "admin", "admin", RoleType.OWNER);
+    User lisa = new User(3, "Lisa", "lisa123", "password2", RoleType.USER);
 
     List<User> users = Arrays.asList(max, admin, lisa);
     users.forEach(user -> {
