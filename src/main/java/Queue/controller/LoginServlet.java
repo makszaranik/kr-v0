@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 
 @WebServlet("/Login")
 public class LoginServlet extends HttpServlet {
@@ -17,7 +18,8 @@ public class LoginServlet extends HttpServlet {
   private AbstractUserDaoService userDaoService;
 
   @Override
-  public void init() throws ServletException {
+  @SneakyThrows
+  public void init(){
     super.init();
     this.userDaoService = ServiceFactory.getUserDaoService();
   }
@@ -38,7 +40,7 @@ public class LoginServlet extends HttpServlet {
       System.out.println("user is null");
     }
 
-    assert user != null;
+    assert (user != null);
 
     if (user.getPassword().equals(password)) {
       request.getSession().setAttribute("username", username);

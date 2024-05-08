@@ -1,7 +1,10 @@
 package Queue.model;
 
 import java.util.Objects;
+import lombok.Getter;
 
+
+@Getter
 public class User {
   private String username;
   private String password;
@@ -25,26 +28,8 @@ public class User {
   }
 
 
-  public String getUsername() {
-    return username;
-  }
-
   public void setUsername(String username) {
     this.username = username;
-  }
-
-  public void setPasswordHash(String passwordHash) {
-    this.passwordHash = passwordHash;
-  }
-
-  public String getPasswordHash() {return this.passwordHash;}
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public int getUserId(){ return this.id;};

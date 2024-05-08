@@ -2,11 +2,12 @@ package Queue.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
+@Getter
 public class Queue {
   private String name;
   private User creator;
-  private List<User> users;
   private List<String> items;
   private boolean isBlocked;
   private Integer id;
@@ -14,7 +15,6 @@ public class Queue {
   public Queue(String name, User creator) {
     this.name = name;
     this.creator = creator;
-    this.users = new ArrayList<>();
     this.items = new ArrayList<>();
     this.id = this.name.hashCode();
   }
@@ -31,13 +31,6 @@ public class Queue {
     isBlocked = blocked;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public Integer getId(){
-     return this.id;
-  }
 
   public void setId(Integer id){
       this.id = id;
@@ -47,16 +40,8 @@ public class Queue {
     this.name = name;
   }
 
-  public void addUser(User user) {
-    users.add(user);
-  }
-
-  public List<String> getItems() {
-    return items;
-  }
 
   public void setCreator(User creator) {this.creator = creator;}
-  public User getCreator() {return this.creator;}
 
   public void addItem(String item) {
     items.add(item);
