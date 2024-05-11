@@ -46,8 +46,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Nothing to Show</h1>
-    <p>There are no items to display.</p>
+    <h1>Queue Is empty</h1>
+    <p>This operation is not allowed for empty queue</p>
 </div>
 </body>
 </html>

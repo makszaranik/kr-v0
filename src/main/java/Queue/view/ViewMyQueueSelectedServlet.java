@@ -52,7 +52,7 @@ public class ViewMyQueueSelectedServlet extends HttpServlet {
             request.setAttribute("selectedQueue", selectedQueue);
             request.getRequestDispatcher("ViewSelectedQueue.jsp").forward(request, response);
           } else {
-            request.getRequestDispatcher("NothingToShowQueueIsEmpty.jsp").forward(request, response);
+            request.getRequestDispatcher("QueueIsEmpty.jsp").forward(request, response);
           }
         }
      }

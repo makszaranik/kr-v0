@@ -1,7 +1,6 @@
 package Queue.controller;
 
 import Queue.services.NameValidatorService.AbstractNameValidatorService;
-import Queue.services.NameValidatorService.impl.NameValidatorService;
 import Queue.model.Queue;
 import Queue.model.User;
 
@@ -16,8 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.SneakyThrows;
 
+
 @WebServlet("/RemoveFromBegin")
-public class RemoveItemFromBeginServlet extends HttpServlet {
+public class RemoveItemFromBeginOfQueueServlet extends HttpServlet {
 
   private AbstractQueueDaoService queueDaoService;
   private AbstractNameValidatorService nameValidatorService;
@@ -50,11 +50,16 @@ public class RemoveItemFromBeginServlet extends HttpServlet {
           request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
           return;
         }
+        if(selectedQueue.getQueueSize() == 0){
+          request.getRequestDispatcher("/QueueIsEmpty.jsp").forward(request, response);
+          return;
+        }
         selectedQueue.removeFirstItem();
-        request.getRequestDispatcher("ItemSuccessfullyDeleted.jsp").forward(request, response);
+        request.getRequestDispatcher("/ItemSuccessfullyDeleted.jsp").forward(request, response);
       }else {
-        request.getRequestDispatcher("/NothingToShowQueueIsEmpty.jsp").forward(request, response);
+        request.getRequestDispatcher("/QueueIsEmpty.jsp").forward(request, response);
       }
     }
   }
 }
+

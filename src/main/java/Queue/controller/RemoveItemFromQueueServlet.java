@@ -1,5 +1,6 @@
 package Queue.controller;
 
+
 import Queue.services.NameValidatorService.AbstractNameValidatorService;
 import Queue.services.NameValidatorService.impl.NameValidatorService;
 import Queue.services.DaoServices.AbstractQueueDaoService;
@@ -64,6 +65,10 @@ public class RemoveItemFromQueueServlet extends HttpServlet {
       if(selectedQueue != null){
         if(selectedQueue.isBlocked()){
           request.getRequestDispatcher("/QueueIsBlocked.jsp").forward(request, response);
+          return;
+        }
+        if(selectedQueue.getQueueSize() == 0){
+          request.getRequestDispatcher("/QueueIsEmpty.jsp").forward(request, response);
           return;
         }
         selectedQueue.removeItem(itemToRemove.trim());
