@@ -13,8 +13,8 @@ import Queue.services.RoleConfiguratorService.impl.RoleConfiguratorService;
 import javax.servlet.ServletContext;
 import lombok.Getter;
 
-public class ServiceFactory {
 
+public class ServiceFactory {
   @Getter
   private static AbstractUserDaoService userDaoService;
   @Getter
@@ -28,7 +28,7 @@ public class ServiceFactory {
     DaoFactory daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     userDaoService = new UserDaoService(daoFactory.getUserDao());
     queueDaoService = new QueueDaoService(daoFactory.getQueueDao());
-    roleConfiguratorService = new RoleConfiguratorService(getQueueDaoService());
+    roleConfiguratorService = new RoleConfiguratorService();
     nameValidatorService = new NameValidatorService();
   }
 

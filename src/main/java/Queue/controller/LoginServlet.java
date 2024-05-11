@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
       System.out.println("user is null");
     }
 
-    assert (user != null);
+    assert user != null;
 
     if (user.getPassword().equals(password)) {
       request.getSession().setAttribute("username", username);

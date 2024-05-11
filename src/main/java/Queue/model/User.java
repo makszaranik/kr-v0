@@ -1,5 +1,6 @@
 package Queue.model;
 
+import Queue.model.Role.RoleType;
 import java.util.Objects;
 import lombok.Getter;
 
@@ -27,6 +28,12 @@ public class User {
     this.roleType = roleType;
   }
 
+  public User(String username, String password) {
+    this.username = username;
+    this.password = password;
+    this.roleType = RoleType.USER;
+  }
+
 
   public void setUsername(String username) {
     this.username = username;
@@ -35,10 +42,6 @@ public class User {
   public int getUserId(){ return this.id;};
 
   public void setUserId(Integer id) {this.id = id;}
-
-
-  public Role.RoleType getRole() {return roleType;}
-  public void setRole(Role.RoleType role) {this.roleType = role;}
 
 
   @Override
