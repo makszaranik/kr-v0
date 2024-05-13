@@ -38,7 +38,7 @@ public class AddMeInQueueServlet extends HttpServlet {
       User user = (User) session.getAttribute("user");
 
       if (user != null) {
-        List<Queue> userQueues = (List<Queue>) queueDaoService.getUserQueues(user.getUsername());
+        List<Queue> userQueues = (List<Queue>) queueDaoService.getAllQueues();
         request.setAttribute("queues", userQueues);
       }
     }
